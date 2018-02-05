@@ -50,6 +50,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Polygon2D2" type="Polygon2D" parent="." index="2"]
 
+editor/display_folded = true
 position = Vector2( 317.232, 437.971 )
 polygon = PoolVector2Array( 0, 0, 230, 0, 230, 80, 0, 80 )
 uv = PoolVector2Array(  )
@@ -115,9 +116,8 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Polygon2D4" type="Polygon2D" parent="." index="4"]
 
-editor/display_folded = true
-position = Vector2( 755.364, 268.216 )
-polygon = PoolVector2Array( 0, 0, 230, 0, 230, 80, 0, 80 )
+position = Vector2( 755.364, 141.216 )
+polygon = PoolVector2Array( 0, 0, 46.5421, 0, 230, 0, 230, 80, 0, 80 )
 uv = PoolVector2Array(  )
 color = Color( 1, 1, 1, 1 )
 vertex_colors = PoolColorArray(  )
@@ -149,7 +149,6 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Polygon2D5" type="Polygon2D" parent="." index="5"]
 
-editor/display_folded = true
 position = Vector2( 401.901, 92.0389 )
 rotation = -0.064828
 polygon = PoolVector2Array( 0, 0, 230, 0, 230, 80, 0, 80 )
@@ -251,6 +250,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Polygon2D8" type="Polygon2D" parent="." index="8"]
 
+editor/display_folded = true
 position = Vector2( 392.808, 353.228 )
 rotation = -1.57103
 polygon = PoolVector2Array( 0, 0, 230, 0, 230, 80, 0, 80 )
@@ -318,6 +318,57 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Node" parent="." index="10" instance=ExtResource( 2 )]
 
-position = Vector2( 151.002, 394.508 )
+position = Vector2( 156, 402 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node2" parent="." index="11" instance=ExtResource( 2 )]
+
+position = Vector2( 156, 447 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node4" parent="." index="12" instance=ExtResource( 2 )]
+
+position = Vector2( 156, 322 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node5" parent="." index="13" instance=ExtResource( 2 )]
+
+position = Vector2( 156, 241 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node6" parent="." index="14" instance=ExtResource( 2 )]
+
+position = Vector2( 265, 282 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node3" parent="." index="15" instance=ExtResource( 2 )]
+
+position = Vector2( 265, 363 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node7" parent="." index="16" instance=ExtResource( 2 )]
+
+position = Vector2( 495, 417 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node8" parent="." index="17" instance=ExtResource( 2 )]
+
+position = Vector2( 540, 417 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node9" parent="." index="18" instance=ExtResource( 2 )]
+
+position = Vector2( 666, 417 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node10" parent="." index="19" instance=ExtResource( 2 )]
+
+position = Vector2( 793, 417 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Node11" parent="." index="20" instance=ExtResource( 2 )]
+
+position = Vector2( 925, 417 )
+_sections_unfolded = [ "Transform" ]
 
 
