@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Thump.wav-ce59bf989b5de8fc5352d631509fe390.sample"
+
+[deps]
+
+source_file="res://Audio/SFX/Thump.wav"
+source_md5="103e4561437ceaf8f27252bc0242aaf9"
+
+dest_files=[ "res://.import/Thump.wav-ce59bf989b5de8fc5352d631509fe390.sample" ]
+dest_md5="3c4d6a071e9072f1cb079a8dbe80b424"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

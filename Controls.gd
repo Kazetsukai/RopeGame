@@ -19,11 +19,26 @@ var hook_relative
 var rope_normal
 var move
 
+# SFX
+var sfx_jump
+var sfx_thud
+var thuddable = false
+var sfx_thump
+var thumpable = false
+var sfx_slide
+var sliding = false
+
 const JUMP_HOLD_LENGTH = 0.25
 var jump_hold = 0
 var wall_jump_leeway = 0
 
 func _ready():
+	# Get SFX
+	sfx_jump = get_node("../sfx/jump")
+	sfx_thud = get_node("../sfx/thud")
+	sfx_thump = get_node("../sfx/thump")
+	sfx_slide = get_node("../sfx/slide")
+	
 	kn = get_parent()
 	poly = get_parent().get_node("Polygon2D")
 	pass
@@ -31,9 +46,11 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("jump"):
 		if kn.is_on_floor():
+			sfx_jump.play()
 			velocity -= GRAVITY / 7
 			jump_hold = JUMP_HOLD_LENGTH
 		elif wall_jump_leeway > 0:
+			sfx_jump.play()
 			velocity += ground_normal * GRAVITY.length() / 7
 			jump_hold = JUMP_HOLD_LENGTH
 			velocity -= GRAVITY / 7
@@ -43,14 +60,29 @@ func _input(event):
 	pass
  
 func _physics_process(delta):
+	if kn.is_on_wall():
+		if !sfx_slide.playing:
+			sfx_slide.play()
+	else:
+		sfx_slide.stop()
+		
+	if !kn.is_on_floor():
+		thuddable = true
+		if !kn.is_on_wall():
+			thumpable = true
+	
 	if kn.is_on_floor():
 		poly.color = Color(0, 0, 1)
+		if thuddable:
+			sfx_thud.play()
+			thuddable = false
+			thumpable = false
 	else:
 		poly.color = Color(1, 0, 1)
 	
 	if Input.is_action_pressed("jump") && jump_hold > 0:
 		poly.color = Color(0, 1, 0)
-		velocity += GRAVITY_JUMP * delta
+		velocity += GRAVITY_JUMP * delta		
 	else:
 		velocity += GRAVITY * delta
 	jump_hold -= delta
@@ -89,11 +121,15 @@ func _physics_process(delta):
 		
 		if kn.is_on_wall() && !kn.is_on_floor() && velocity.y > 0:
 			wall_jump_leeway = 5
+			if thumpable:
+				sfx_thump.play()
+				thumpable = false
 			
-		if wall_jump_leeway > 0:
+			
+		if wall_jump_leeway > 0:			
 			poly.color = Color(1, 0, 0)
 			velocity.y = min(50, velocity.y)
-			wall_jump_leeway -= 1
+			wall_jump_leeway -= 1			
 			
 		if !kn.is_on_floor() || kn.is_on_wall():
 			ground_tangent = Vector2(1, 0)
