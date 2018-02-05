@@ -13,6 +13,9 @@ var ground_tangent = Vector2(1, 0)
 var ground_normal = Vector2(1, 0)
 var kn
 var poly
+var hook_point
+var hook_length
+var rope_normal
 
 const JUMP_HOLD_LENGTH = 0.25
 var jump_hold = 0
@@ -35,8 +38,6 @@ func _input(event):
 	pass
  
 func _physics_process(delta):
-	print(wall_jump_leeway)
-	
 	if kn.is_on_floor():
 		poly.color = Color(0, 0, 1)
 	else:
@@ -55,36 +56,50 @@ func _physics_process(delta):
 		velocity = velocity.normalized() * MAX_SPEED
 	
 	velocity = kn.move_and_slide(velocity, FLOOR_NORMAL)
+	if hook_point:
+		var rope_vec = hook_point - kn.global_position
+		var rope_dir = rope_vec.normalized()
+		var ideal = hook_point - rope_dir * hook_length
+		var rope_diff = ideal - kn.global_position
+		rope_normal = rope_dir.rotated(PI * 0.5)
+		kn.move_and_slide(rope_diff / delta, FLOOR_NORMAL)
+		velocity = rope_normal.dot(velocity) * rope_normal
 	
 	var move = 0
 	if Input.is_action_pressed("left"):
-		move += -TARGET_MOVE_SPEED
+		move += -1
 	if Input.is_action_pressed("right"):
-		move += TARGET_MOVE_SPEED
+		move += 1
 	
-	if kn.get_slide_count() > 0:
-		var col = kn.get_slide_collision(0)
-		ground_normal = col.get_normal()
-		ground_tangent = ground_normal.rotated(PI * 0.5)
-	
-	if kn.is_on_wall() && !kn.is_on_floor() && velocity.y > 0:
-		wall_jump_leeway = 5
+	if !hook_point || move != 0:
+		if kn.get_slide_count() > 0:
+			var col = kn.get_slide_collision(0)
+			ground_normal = col.get_normal()
+			ground_tangent = ground_normal.rotated(PI * 0.5)
 		
-	if wall_jump_leeway > 0:
-		poly.color = Color(1, 0, 0)
-		velocity.y = min(50, velocity.y)
-		wall_jump_leeway -= 1
+		if kn.is_on_wall() && !kn.is_on_floor() && velocity.y > 0:
+			wall_jump_leeway = 5
+			
+		if wall_jump_leeway > 0:
+			poly.color = Color(1, 0, 0)
+			velocity.y = min(50, velocity.y)
+			wall_jump_leeway -= 1
+			
+		if !kn.is_on_floor() || kn.is_on_wall():
+			ground_tangent = Vector2(1, 0)
+		if hook_point:
+			ground_tangent = rope_normal
 		
-	if !kn.is_on_floor() || kn.is_on_wall():
-		ground_tangent = Vector2(1, 0)
-		
-	var target_velocity = move * ground_tangent
-	var plane_velocity = ground_tangent.dot(velocity) * ground_tangent
-	var d = target_velocity - plane_velocity
-	if kn.is_on_floor():
-		d = d.normalized() * min(d.length(), ACCEL * delta)
-	else:
-		d = d.normalized() * min(d.length(), AIR_ACCEL * delta)
-	velocity += d
+		var move_speed = TARGET_MOVE_SPEED
+		if hook_point:
+			move_speed = min(move_speed + velocity.length(), 5000)
+		var target_velocity = move * ground_tangent * move_speed
+		var plane_velocity = ground_tangent.dot(velocity) * ground_tangent
+		var d = target_velocity - plane_velocity
+		if kn.is_on_floor():
+			d = d.normalized() * min(d.length(), ACCEL * delta)
+		else:
+			d = d.normalized() * min(d.length(), AIR_ACCEL * delta)
+		velocity += d
 	
 	pass
