@@ -15,6 +15,7 @@ var kn
 var poly
 var hook_point
 var hook_length
+var hook_relative
 var rope_normal
 
 const JUMP_HOLD_LENGTH = 0.25
@@ -57,9 +58,10 @@ func _physics_process(delta):
 	
 	velocity = kn.move_and_slide(velocity, FLOOR_NORMAL)
 	if hook_point:
-		var rope_vec = hook_point - kn.global_position
+		var hp = hook_point + hook_relative.global_position
+		var rope_vec = hp - kn.global_position
 		var rope_dir = rope_vec.normalized()
-		var ideal = hook_point - rope_dir * hook_length
+		var ideal = hp - rope_dir * hook_length
 		var rope_diff = ideal - kn.global_position
 		rope_normal = rope_dir.rotated(PI * 0.5)
 		kn.move_and_slide(rope_diff / delta, FLOOR_NORMAL)

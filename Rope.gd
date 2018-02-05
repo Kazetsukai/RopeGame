@@ -39,6 +39,10 @@ func _process(delta):
 
 func _physics_process(delta):
 	line.visible = firing || hooked
+	
+	if hooked:
+		rope_pos = controls.hook_relative.global_position + controls.hook_point
+	
 	if rope_pos:
 		line.set_point_position(1, rope_pos)
 	
@@ -51,16 +55,17 @@ func _physics_process(delta):
 			firing = false
 		
 		var space_state = kn.get_world_2d().get_direct_space_state()
-		var result = space_state.intersect_ray( rope_pos - rope_dir, rope_pos)
+		var result = space_state.intersect_ray( kn.global_position, rope_pos, [ RID(get_parent()) ])
 		if !result.empty():
 			rope_time = 0.5
-			controls.hook_point = result.position
-			controls.hook_length = length
+			controls.hook_point = result.position - result.collider.global_position
+			controls.hook_relative = result.collider
+			controls.hook_length = (result.position - kn.global_position).length()
 			hooked = true
 			firing = false
 			
 	if rope_time && rope_time > 0:
-		rope_time -= delta
+		#rope_time -= delta
 		if rope_time <= 0:
 			hooked = false
 			controls.hook_point = null
