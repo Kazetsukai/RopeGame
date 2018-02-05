@@ -18,6 +18,12 @@ func _ready():
 	pass
 
 func _input(event):
+	if event.is_action_pressed("jump"):
+		if hooked:
+			firing = false
+			hooked = false
+			controls.hook_point = null
+		
 	if event.is_action_pressed("rope"):
 		if firing || hooked:
 			firing = false
@@ -25,10 +31,7 @@ func _input(event):
 			controls.hook_point = null
 		else:
 			rope_pos = kn.global_position
-			if controls.velocity.x > 0:
-				rope_dir = Vector2(1, -1).normalized()
-			else:
-				rope_dir = Vector2(-1, -1).normalized()
+			rope_dir = controls.move.normalized();
 			firing = true
 			
 			print("firing rope: " + str(rope_dir))

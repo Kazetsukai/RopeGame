@@ -17,6 +17,7 @@ var hook_point
 var hook_length
 var hook_relative
 var rope_normal
+var move
 
 const JUMP_HOLD_LENGTH = 0.25
 var jump_hold = 0
@@ -36,6 +37,9 @@ func _input(event):
 			velocity += ground_normal * GRAVITY.length() / 7
 			jump_hold = JUMP_HOLD_LENGTH
 			velocity -= GRAVITY / 7
+		elif hook_point:
+			jump_hold = JUMP_HOLD_LENGTH
+			
 	pass
  
 func _physics_process(delta):
@@ -67,13 +71,17 @@ func _physics_process(delta):
 		kn.move_and_slide(rope_diff / delta, FLOOR_NORMAL)
 		velocity = rope_normal.dot(velocity) * rope_normal
 	
-	var move = 0
+	move = Vector2(0,0)
 	if Input.is_action_pressed("left"):
-		move += -1
+		move += Vector2(-1, 0)
 	if Input.is_action_pressed("right"):
-		move += 1
+		move += Vector2(1, 0)
+	if Input.is_action_pressed("up"):
+		move += Vector2(0, -1)
+	if Input.is_action_pressed("down"):
+		move += Vector2(0, 1)
 	
-	if !hook_point || move != 0:
+	if !hook_point || move.x != 0:
 		if kn.get_slide_count() > 0:
 			var col = kn.get_slide_collision(0)
 			ground_normal = col.get_normal()
