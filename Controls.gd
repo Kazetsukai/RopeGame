@@ -14,7 +14,7 @@ var ground_normal = Vector2(1, 0)
 var kn
 var poly
 
-const JUMP_HOLD_LENGTH = 0.2
+const JUMP_HOLD_LENGTH = 0.25
 var jump_hold = 0
 var wall_jump_leeway = 0
 
@@ -26,12 +26,12 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("jump"):
 		if kn.is_on_floor():
-			velocity -= GRAVITY / 5
+			velocity -= GRAVITY / 7
 			jump_hold = JUMP_HOLD_LENGTH
 		elif wall_jump_leeway > 0:
-			velocity += ground_normal * GRAVITY.length() / 5
+			velocity += ground_normal * GRAVITY.length() / 7
 			jump_hold = JUMP_HOLD_LENGTH
-			velocity -= GRAVITY / 5
+			velocity -= GRAVITY / 7
 	pass
  
 func _physics_process(delta):

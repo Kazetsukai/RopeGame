@@ -18,9 +18,11 @@ func _input(event):
 		if firing:
 			firing = false
 		else:
-			var target = event.position
 			rope_pos = kn.global_position
-			rope_dir = (target - rope_pos).normalized()
+			if get_parent().get_node("Controls").velocity.x > 0:
+				rope_dir = Vector2(1, -1).normalized()
+			else:
+				rope_dir = Vector2(-1, -1).normalized()
 			firing = true
 			
 			print("firing rope: " + str(rope_dir))

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Box.tscn" type="PackedScene" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -49,7 +50,6 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Polygon2D2" type="Polygon2D" parent="." index="2"]
 
-editor/display_folded = true
 position = Vector2( 317.232, 437.971 )
 polygon = PoolVector2Array( 0, 0, 230, 0, 230, 80, 0, 80 )
 uv = PoolVector2Array(  )
@@ -251,7 +251,6 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Polygon2D8" type="Polygon2D" parent="." index="8"]
 
-editor/display_folded = true
 position = Vector2( 392.808, 353.228 )
 rotation = -1.57103
 polygon = PoolVector2Array( 0, 0, 230, 0, 230, 80, 0, 80 )
@@ -316,5 +315,9 @@ bounce = 0.0
 position = Vector2( 115.044, 39.8888 )
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="Node" parent="." index="10" instance=ExtResource( 2 )]
+
+position = Vector2( 151.002, 394.508 )
 
 
