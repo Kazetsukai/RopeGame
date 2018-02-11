@@ -4,6 +4,8 @@ const FLOOR_NORMAL = Vector2(0, -1)
 const GRAVITY = Vector2(0, 1500)
 const GRAVITY_JUMP = Vector2(0, 100)
 const MAX_SPEED = 500
+const MAX_FALL_SPEED = 300
+const MAX_ROPE_SPEED = 500
 const TARGET_MOVE_SPEED = 150
 const ACCEL = 5000
 const AIR_ACCEL = 1000
@@ -18,6 +20,7 @@ var hook_length
 var hook_relative
 var rope_normal
 var move
+var dir = Vector2(1, 0) # Direction vector, left or right
 
 # SFX
 var sfx_jump
@@ -52,9 +55,11 @@ func _input(event):
 		elif wall_jump_leeway > 0:
 			sfx_jump.play()
 			velocity += ground_normal * GRAVITY.length() / 7
-			jump_hold = JUMP_HOLD_LENGTH
 			velocity -= GRAVITY / 7
+			jump_hold = JUMP_HOLD_LENGTH
 		elif hook_point:
+			velocity += Vector2(move.x, 0) * GRAVITY.length() / 7
+			velocity -= GRAVITY / 7
 			jump_hold = JUMP_HOLD_LENGTH
 			
 	pass
@@ -88,6 +93,8 @@ func _physics_process(delta):
 	jump_hold -= delta
 	
 	# Speed limit
+	if velocity.y > MAX_FALL_SPEED:
+		velocity.y = MAX_FALL_SPEED
 	var length = velocity.length()
 	if length > MAX_SPEED:
 		velocity = velocity.normalized() * MAX_SPEED
@@ -106,8 +113,10 @@ func _physics_process(delta):
 	move = Vector2(0,0)
 	if Input.is_action_pressed("left"):
 		move += Vector2(-1, 0)
+		dir = Vector2(-1, 0)
 	if Input.is_action_pressed("right"):
 		move += Vector2(1, 0)
+		dir = Vector2(1, 0)
 	if Input.is_action_pressed("up"):
 		move += Vector2(0, -1)
 	if Input.is_action_pressed("down"):
@@ -126,19 +135,20 @@ func _physics_process(delta):
 				thumpable = false
 			
 			
-		if wall_jump_leeway > 0:			
+		if wall_jump_leeway > 0:
 			poly.color = Color(1, 0, 0)
 			velocity.y = min(50, velocity.y)
-			wall_jump_leeway -= 1			
+			wall_jump_leeway -= 1
 			
 		if !kn.is_on_floor() || kn.is_on_wall():
 			ground_tangent = Vector2(1, 0)
 		if hook_point:
 			ground_tangent = rope_normal
 		
+		# Apply acceleration
 		var move_speed = TARGET_MOVE_SPEED
 		if hook_point:
-			move_speed = min(move_speed + velocity.length(), 5000)
+			move_speed = min(move_speed + velocity.length(), MAX_ROPE_SPEED)
 		var target_velocity = move * ground_tangent * move_speed
 		var plane_velocity = ground_tangent.dot(velocity) * ground_tangent
 		var d = target_velocity - plane_velocity

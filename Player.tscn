@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Rope.gd" type="Script" id=1]
-[ext_resource path="res://Controls.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Rope.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Controls.gd" type="Script" id=2]
 [ext_resource path="res://Audio/SFX/Jump.wav" type="AudioStream" id=3]
 [ext_resource path="res://Audio/SFX/Thud.wav" type="AudioStream" id=4]
 [ext_resource path="res://Audio/SFX/Thump.wav" type="AudioStream" id=5]
@@ -12,7 +12,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 5, 10 )
 
-[node name="Player" type="Node2D" index="0"]
+[node name="Player" type="Node2D"]
 
 position = Vector2( -0.0769424, 0 )
 
@@ -63,6 +63,8 @@ invert_border = 100.0
 shape = SubResource( 1 )
 
 [node name="sfx" type="Node" parent="KinematicBody2D" index="4"]
+
+editor/display_folded = true
 
 [node name="jump" type="AudioStreamPlayer2D" parent="KinematicBody2D/sfx" index="0"]
 
