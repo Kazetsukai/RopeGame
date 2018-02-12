@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Thud.wav-cf63d69e590c9465d67028f640d3d003.sample"
+
+[deps]
+
+source_file="res://Audio/SFX/Thud.wav"
+source_md5="b0dcb79fccad3961bff568cb084160d1"
+
+dest_files=[ "res://.import/Thud.wav-cf63d69e590c9465d67028f640d3d003.sample" ]
+dest_md5="c536c1d2dd16dd7eaf8dc58f19f179ee"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

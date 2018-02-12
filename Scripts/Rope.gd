@@ -31,7 +31,7 @@ func _input(event):
 			controls.hook_point = null
 		else:
 			rope_pos = kn.global_position
-			rope_dir = controls.move.normalized();
+			rope_dir = (controls.dir + Vector2(0, -1)).normalized()
 			firing = true
 			
 			print("firing rope: " + str(rope_dir))

@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Rope.gd" type="Script" id=1]
-[ext_resource path="res://Controls.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Rope.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Controls.gd" type="Script" id=2]
+[ext_resource path="res://Audio/SFX/Jump.wav" type="AudioStream" id=3]
+[ext_resource path="res://Audio/SFX/Thud.wav" type="AudioStream" id=4]
+[ext_resource path="res://Audio/SFX/Thump.wav" type="AudioStream" id=5]
+[ext_resource path="res://Audio/SFX/Slide.wav" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -22,6 +26,7 @@ _sections_unfolded = [ "Collision", "Pickable", "collision" ]
 
 [node name="Rope" type="Node" parent="KinematicBody2D" index="0"]
 
+editor/display_folded = true
 script = ExtResource( 1 )
 
 [node name="Line2D" type="Line2D" parent="KinematicBody2D/Rope" index="0"]
@@ -29,6 +34,7 @@ script = ExtResource( 1 )
 points = PoolVector2Array( 7.02778, 2.41205, 6.97122, -0.529152 )
 width = 3.0
 default_color = Color( 0.796875, 0.541675, 0.180542, 1 )
+texture_mode = 1
 sharp_limit = 2.0
 round_precision = 8
 
@@ -55,5 +61,50 @@ invert_border = 100.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D" index="3"]
 
 shape = SubResource( 1 )
+
+[node name="sfx" type="Node" parent="KinematicBody2D" index="4"]
+
+editor/display_folded = true
+
+[node name="jump" type="AudioStreamPlayer2D" parent="KinematicBody2D/sfx" index="0"]
+
+position = Vector2( -0.0769424, 0 )
+stream = ExtResource( 3 )
+volume_db = 0.0
+autoplay = false
+max_distance = 2000.0
+attenuation = 1.0
+bus = "player_sfx"
+area_mask = 1
+
+[node name="thud" type="AudioStreamPlayer2D" parent="KinematicBody2D/sfx" index="1"]
+
+stream = ExtResource( 4 )
+volume_db = 0.0
+autoplay = false
+max_distance = 2000.0
+attenuation = 1.0
+bus = "player_sfx"
+area_mask = 1
+
+[node name="thump" type="AudioStreamPlayer2D" parent="KinematicBody2D/sfx" index="2"]
+
+stream = ExtResource( 5 )
+volume_db = 0.0
+autoplay = false
+max_distance = 2000.0
+attenuation = 1.0
+bus = "player_sfx"
+area_mask = 1
+
+[node name="slide" type="AudioStreamPlayer2D" parent="KinematicBody2D/sfx" index="3"]
+
+stream = ExtResource( 6 )
+volume_db = -15.0
+autoplay = false
+max_distance = 2000.0
+attenuation = 1.0
+bus = "player_sfx"
+area_mask = 1
 
 
