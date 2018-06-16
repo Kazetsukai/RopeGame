@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Rope.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=2]
@@ -6,13 +6,14 @@
 [ext_resource path="res://Audio/SFX/Thud.wav" type="AudioStream" id=4]
 [ext_resource path="res://Audio/SFX/Thump.wav" type="AudioStream" id=5]
 [ext_resource path="res://Audio/SFX/Slide.wav" type="AudioStream" id=6]
+[ext_resource path="res://MageBlasts.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 5, 10 )
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node2D" index="0"]
 
 position = Vector2( -0.0769424, 0 )
 
@@ -22,12 +23,12 @@ input_pickable = false
 collision_layer = 1
 collision_mask = 1
 collision/safe_margin = 0.08
-_sections_unfolded = [ "Collision", "Pickable", "collision" ]
+_sections_unfolded = [ "Collision", "Pickable", "Transform", "collision" ]
 
 [node name="Rope" type="Node" parent="KinematicBody2D" index="0"]
 
-editor/display_folded = true
 script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
 
 [node name="Line2D" type="Line2D" parent="KinematicBody2D/Rope" index="0"]
 
@@ -57,6 +58,7 @@ texture_scale = Vector2( 1, 1 )
 texture_rotation_degrees = 0.0
 invert_enable = false
 invert_border = 100.0
+_sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D" index="3"]
 
@@ -106,5 +108,9 @@ max_distance = 2000.0
 attenuation = 1.0
 bus = "player_sfx"
 area_mask = 1
+
+[node name="MageBlasts" type="Node" parent="KinematicBody2D" index="5"]
+
+script = ExtResource( 7 )
 
 

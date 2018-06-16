@@ -1,6 +1,7 @@
 extends Node
 
 const ROPE_SPEED = 20
+const ENABLED = false
 
 var kn
 var firing = false
@@ -12,12 +13,15 @@ var controls
 var rope_time
 
 func _ready():
+	if !ENABLED: return
 	kn = get_parent()
 	line = $Line2D
 	controls = $"../Controls"
 	pass
 
 func _input(event):
+	if !ENABLED: return
+	
 	if event.is_action_pressed("jump"):
 		if hooked:
 			firing = false
@@ -38,9 +42,13 @@ func _input(event):
 	pass
 
 func _process(delta):
+	if !ENABLED: return
+	
 	line.set_point_position(0, kn.global_position)
 
 func _physics_process(delta):
+	if !ENABLED: return
+	
 	line.visible = firing || hooked
 	
 	if hooked:

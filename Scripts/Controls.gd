@@ -9,6 +9,7 @@ const MAX_ROPE_SPEED = 500
 const TARGET_MOVE_SPEED = 150
 const ACCEL = 5000
 const AIR_ACCEL = 1000
+const JUMP_IMPULSE = GRAVITY / 5
 
 var velocity = Vector2(0, 0)
 var ground_tangent = Vector2(1, 0)
@@ -31,7 +32,7 @@ var thumpable = false
 var sfx_slide
 var sliding = false
 
-const JUMP_HOLD_LENGTH = 0.25
+const JUMP_HOLD_LENGTH = 0.20
 var jump_hold = 0
 var wall_jump_leeway = 0
 
@@ -50,16 +51,16 @@ func _input(event):
 	if event.is_action_pressed("jump"):
 		if kn.is_on_floor():
 			sfx_jump.play()
-			velocity -= GRAVITY / 7
+			velocity -= JUMP_IMPULSE
 			jump_hold = JUMP_HOLD_LENGTH
 		elif wall_jump_leeway > 0:
 			sfx_jump.play()
-			velocity += ground_normal * GRAVITY.length() / 7
-			velocity -= GRAVITY / 7
+			velocity += ground_normal * JUMP_IMPULSE.length() / 2
+			velocity -= JUMP_IMPULSE
 			jump_hold = JUMP_HOLD_LENGTH
 		elif hook_point:
-			velocity += Vector2(move.x, 0) * GRAVITY.length() / 7
-			velocity -= GRAVITY / 7
+			velocity += Vector2(move.x, 0) * JUMP_IMPULSE.length()
+			velocity -= JUMP_IMPULSE
 			jump_hold = JUMP_HOLD_LENGTH
 			
 	pass
