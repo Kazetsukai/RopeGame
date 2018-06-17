@@ -3,13 +3,13 @@ extends Node
 const FLOOR_NORMAL = Vector2(0, -1)
 const GRAVITY = Vector2(0, 1500)
 const GRAVITY_JUMP = Vector2(0, 100)
-const MAX_SPEED = 500
-const MAX_FALL_SPEED = 300
+const MAX_SPEED = 600
+const MAX_FALL_SPEED = 350
 const MAX_ROPE_SPEED = 500
-const TARGET_MOVE_SPEED = 150
-const ACCEL = 5000
-const AIR_ACCEL = 1000
-const JUMP_IMPULSE = GRAVITY / 5
+const TARGET_MOVE_SPEED = 300
+const ACCEL = 10000
+const AIR_ACCEL = 2000
+const JUMP_IMPULSE = GRAVITY / 4
 
 var velocity = Vector2(0, 0)
 var ground_tangent = Vector2(1, 0)
@@ -23,6 +23,8 @@ var rope_normal
 var move
 var dir = Vector2(1, 0) # Direction vector, left or right
 
+var player
+
 # SFX
 var sfx_jump
 var sfx_thud
@@ -35,6 +37,7 @@ var sliding = false
 const JUMP_HOLD_LENGTH = 0.20
 var jump_hold = 0
 var wall_jump_leeway = 0
+var pre_jump = 0
 
 func _ready():
 	# Get SFX
@@ -45,28 +48,36 @@ func _ready():
 	
 	kn = get_parent()
 	poly = get_parent().get_node("Polygon2D")
+	player = get_parent().get_parent()
 	pass
 
 func _input(event):
-	if event.is_action_pressed("jump"):
-		if kn.is_on_floor():
-			sfx_jump.play()
-			velocity -= JUMP_IMPULSE
-			jump_hold = JUMP_HOLD_LENGTH
-		elif wall_jump_leeway > 0:
-			sfx_jump.play()
-			velocity += ground_normal * JUMP_IMPULSE.length() / 2
-			velocity -= JUMP_IMPULSE
-			jump_hold = JUMP_HOLD_LENGTH
-		elif hook_point:
-			velocity += Vector2(move.x, 0) * JUMP_IMPULSE.length()
-			velocity -= JUMP_IMPULSE
-			jump_hold = JUMP_HOLD_LENGTH
-			
+	if event.is_action_pressed("jump_" + player.player_num):
+		pre_jump = 0.2
+		doJump()
 	pass
- 
+
+func doJump():
+	if kn.is_on_floor():
+		sfx_jump.play()
+		velocity -= JUMP_IMPULSE
+		jump_hold = JUMP_HOLD_LENGTH
+		pre_jump = 0
+	elif wall_jump_leeway > 0:
+		sfx_jump.play()
+		velocity += ground_normal * JUMP_IMPULSE.length()
+		velocity -= JUMP_IMPULSE
+		jump_hold = JUMP_HOLD_LENGTH
+		pre_jump = 0
+	elif hook_point:
+		velocity += Vector2(move.x, 0) * JUMP_IMPULSE.length()
+		velocity -= JUMP_IMPULSE
+		jump_hold = JUMP_HOLD_LENGTH
+		pre_jump = 0
+
+
 func _physics_process(delta):
-	if kn.is_on_wall():
+	if kn.is_on_wall() && !kn.is_on_floor():
 		if !sfx_slide.playing:
 			sfx_slide.play()
 	else:
@@ -86,11 +97,17 @@ func _physics_process(delta):
 	else:
 		poly.color = Color(1, 0, 1)
 	
-	if Input.is_action_pressed("jump") && jump_hold > 0:
+	if Input.is_action_pressed("jump_" + player.player_num) && jump_hold > 0:
 		poly.color = Color(0, 1, 0)
 		velocity += GRAVITY_JUMP * delta		
 	else:
 		velocity += GRAVITY * delta
+		
+	if pre_jump > 0 && Input.is_action_pressed("jump_" + player.player_num):
+		poly.color = Color(1, 1, 1)
+		doJump()
+	
+	pre_jump -= delta
 	jump_hold -= delta
 	
 	# Speed limit
@@ -112,15 +129,15 @@ func _physics_process(delta):
 		velocity = rope_normal.dot(velocity) * rope_normal
 	
 	move = Vector2(0,0)
-	if Input.is_action_pressed("left"):
+	if Input.is_action_pressed("left_" + player.player_num):
 		move += Vector2(-1, 0)
 		dir = Vector2(-1, 0)
-	if Input.is_action_pressed("right"):
+	if Input.is_action_pressed("right_" + player.player_num):
 		move += Vector2(1, 0)
 		dir = Vector2(1, 0)
-	if Input.is_action_pressed("up"):
+	if Input.is_action_pressed("up_" + player.player_num):
 		move += Vector2(0, -1)
-	if Input.is_action_pressed("down"):
+	if Input.is_action_pressed("down_" + player.player_num):
 		move += Vector2(0, 1)
 	
 	if !hook_point || move.x != 0:
