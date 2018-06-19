@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 10.0
+
+[node name="Node2D" type="Node2D" index="0"]
+
+[node name="Area2D" type="Area2D" parent="." index="0"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Audio Bus", "Collision" ]
+
+[node name="Polygon2D" type="Polygon2D" parent="Area2D" index="0"]
+
+polygon = PoolVector2Array( -0.182526, -8.00145, 2.87608, -7.18582, 5.11905, -5.55457, 6.13858, -3.3116, 6.5464, -0.660812, 6.13858, 1.37825, 5.52687, 3.82513, 4.09952, 5.66029, 2.46826, 6.88373, 0.429199, 7.29154, -2.62939, 7.29154, -5.89191, 6.0681, -8.9505, 5.25248, -12.0091, 4.02904, -15.4755, 2.39779, -18.5341, 1.58216, -21.3888, 0.358719, -24.6513, -0.0490952, -21.1849, -0.864723, -18.3302, -1.88425, -15.2716, -2.90379, -10.3779, -5.14676, -8.13487, -5.96239, -4.87238, -7.38973, -2.01768, -8.00145 )
+uv = PoolVector2Array(  )
+color = Color( 1, 1, 1, 1 )
+vertex_colors = PoolColorArray(  )
+offset = Vector2( 0, 0 )
+antialiased = false
+texture = null
+texture_offset = Vector2( 0, 0 )
+texture_scale = Vector2( 1, 1 )
+texture_rotation_degrees = 0.0
+invert_enable = false
+invert_border = 100.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="1"]
+
+position = Vector2( -1.43865, -0.308968 )
+scale = Vector2( 0.802437, 0.802437 )
+shape = SubResource( 1 )
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
+
+

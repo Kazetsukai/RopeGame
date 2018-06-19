@@ -9,7 +9,9 @@ var players = []
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
-	
+	set_physics_process(true)
+
+	# Make N players
 	for i in range(2):
 		var player = preload("res://Scenes/Player.tscn").instance()
 		player.player_num = String(i+1)
@@ -18,10 +20,9 @@ func _ready():
 		
 		players.append(player)
 		add_child(player)
-	
-	pass
 
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+func _physics_process(delta):
+	# Called every frame. Delta is time since last frame.
+	# Update game logic here.
+	var st = Engine.get_main_loop()
+	pass

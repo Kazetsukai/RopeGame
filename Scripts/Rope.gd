@@ -17,7 +17,6 @@ func _ready():
 	kn = get_parent()
 	line = $Line2D
 	controls = $"../Controls"
-	pass
 
 func _input(event):
 	if !ENABLED: return
@@ -39,7 +38,6 @@ func _input(event):
 			firing = true
 			
 			print("firing rope: " + str(rope_dir))
-	pass
 
 func _process(delta):
 	if !ENABLED: return
@@ -80,5 +78,3 @@ func _physics_process(delta):
 		if rope_time <= 0:
 			hooked = false
 			controls.hook_point = null
-	
-	pass

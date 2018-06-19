@@ -8,7 +8,7 @@ const MAX_FALL_SPEED = 350
 const MAX_ROPE_SPEED = 500
 const TARGET_MOVE_SPEED = 300
 const ACCEL = 10000
-const AIR_ACCEL = 2000
+const AIR_ACCEL = 1000
 const JUMP_IMPULSE = GRAVITY / 4
 
 var velocity = Vector2(0, 0)
@@ -65,7 +65,7 @@ func doJump():
 		pre_jump = 0
 	elif wall_jump_leeway > 0:
 		sfx_jump.play()
-		velocity += ground_normal * JUMP_IMPULSE.length()
+		velocity += ground_normal * JUMP_IMPULSE.length() / 2
 		velocity -= JUMP_IMPULSE
 		jump_hold = JUMP_HOLD_LENGTH
 		pre_jump = 0
@@ -146,8 +146,8 @@ func _physics_process(delta):
 			ground_normal = col.get_normal()
 			ground_tangent = ground_normal.rotated(PI * 0.5)
 		
-		if kn.is_on_wall() && !kn.is_on_floor() && velocity.y > 0:
-			wall_jump_leeway = 5
+		if kn.is_on_wall() && !kn.is_on_floor():
+			wall_jump_leeway = 10
 			if thumpable:
 				sfx_thump.play()
 				thumpable = false
@@ -155,8 +155,9 @@ func _physics_process(delta):
 			
 		if wall_jump_leeway > 0:
 			poly.color = Color(1, 0, 0)
-			velocity.y = min(50, velocity.y)
 			wall_jump_leeway -= 1
+			if kn.is_on_wall():
+				velocity.y = min(50, velocity.y)
 			
 		if !kn.is_on_floor() || kn.is_on_wall():
 			ground_tangent = Vector2(1, 0)
