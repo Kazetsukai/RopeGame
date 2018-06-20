@@ -7,10 +7,6 @@ extends Node
 var players = []
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	set_physics_process(true)
-
 	# Make N players
 	for i in range(2):
 		var player = preload("res://Scenes/Player.tscn").instance()
